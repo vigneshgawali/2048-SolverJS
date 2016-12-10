@@ -1,3 +1,4 @@
+var agent = "";
 function GameManager(size, InputManager, Actuator) {
   this.size         = size; // Size of the grid
   this.inputManager = new InputManager;
@@ -7,29 +8,27 @@ function GameManager(size, InputManager, Actuator) {
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
-
-//  this.inputManager.on('think', function() {
-//    var best = this.ai.getBest();
-//    this.actuator.showHint(best.move);
-//  }.bind(this));
     
-    this.inputManager.on('Random', function(){
-        this.ai = new randomAI(this.grid);
-        console.log("Agent selected: Random");
-    }.bind(this));
+  agent = "Expectimax";
     
-    this.inputManager.on('Expectimax', function(){
-        this.ai = new minimaxAI(this.grid);
-        console.log("Agent selected: Expectimax");
-    }.bind(this));
+  this.inputManager.on('Random', function(){
+    agent = "Random";
+    this.ai = new randomAI(this.grid);
+    console.log("Agent selected: Random");
+  }.bind(this));
     
-    this.inputManager.on('MonteCarlo Tree Search', function(){
-        this.ai = new AI(this.grid);
-        console.log("Agent selected: MonteCarlo Tree Search");
-    }.bind(this));
+  this.inputManager.on('Expectimax', function(){
+    agent = "Expectimax";
+    this.ai = new expectimaxAI(this.grid);
+    console.log("Agent selected: Expectimax");
+  }.bind(this));
     
-
-
+  this.inputManager.on('MonteCarlo Tree Search', function(){
+    agent = "MonteCarlo Tree Search";
+    this.ai = new minimaxAI(this.grid);
+    console.log("Agent selected: MonteCarlo Tree Search");
+  }.bind(this));
+  
   this.inputManager.on('run', function() {
     if (this.running) {
       this.running = false;
@@ -58,8 +57,17 @@ GameManager.prototype.setup = function () {
   this.grid.addStartTiles();
 
 //  this.ai           = new AI(this.grid);
-  this.ai           = new randomAI(this.grid);
+
 //  this.ai           = new minimaxAI(this.grid);
+  if(agent==="Random"){
+    this.ai = new randomAI(this.grid);      
+  }
+  else if(agent==="Expectimax"){
+    this.ai = new expectimaxAI(this.grid);
+  }
+  else if(agent==="MonteCarlo Tree Search"){
+    this.ai = new minimaxAI(this.grid);
+  }
 
   this.score        = 0;
   this.over         = false;
@@ -68,7 +76,6 @@ GameManager.prototype.setup = function () {
   // Update the actuator
   this.actuate();
 };
-
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
@@ -96,20 +103,14 @@ GameManager.prototype.move = function(direction) {
 
   if (!this.grid.movesAvailable()) {
     this.over = true; // Game over!
-      
   }
-
   this.actuate();
 }
 
 // moves continuously until game is over
 GameManager.prototype.run = function() {
-//  var best = this.ai.getBest();
-//  var best = this.ai.getRandomMove();
-    
+
   var nextMove = this.ai.getMove();
-    
-//  this.move(best.move);
   this.move(nextMove);
   var timeout = animationDelay;
   if (this.running && !this.over && !this.won) {

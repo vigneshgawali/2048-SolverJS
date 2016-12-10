@@ -106,9 +106,11 @@ minimaxAI.prototype.getNextMove = function(alpha, beta, depth){
                 this.grid.insertTile(newTile);
                 
                 scoreMapping[value][index] = -this.grid.smoothness() + this.grid.islands();
+
                 this.grid.removeTile(newTile);
             }
         }
+        
         
         var worstScore = Math.max(Math.max.apply(null, scoreMapping[2]), Math.max.apply(null, scoreMapping[4]));
         for(var value in scoreMapping){
@@ -119,7 +121,9 @@ minimaxAI.prototype.getNextMove = function(alpha, beta, depth){
             }
         }
         
+        
         for(var i = 0; i < newEntries.length; i++){
+            
             var newPosition = newEntries[i].position;
             var val = newEntries[i].value;
             
@@ -142,28 +146,3 @@ minimaxAI.prototype.getNextMove = function(alpha, beta, depth){
     }
     return {move: nextMove, score: maxScore};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
