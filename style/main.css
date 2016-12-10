@@ -8,7 +8,7 @@ html, body {
   font-size: 18px; }
 
 body {
-  margin: 80px 0; }
+  margin: 50px 0; }
 
 .heading:after {
   content: "";
@@ -55,7 +55,7 @@ h1.title {
   background: #bbada0;
   padding: 15px 25px;
   font-size: 25px;
-  height: 25px;
+  height: 60px;
   line-height: 47px;
   font-weight: bold;
   border-radius: 3px;

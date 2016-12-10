@@ -119,7 +119,7 @@ AI.prototype.search = function(depth, alpha, beta, positions, cutoffs) {
 }
 
 // performs a search and returns the best move
-AI.prototype.getBest = function() {
+AI.prototype.getMove = function() {
   return this.iterativeDeep();
 }
 
@@ -137,7 +137,7 @@ AI.prototype.iterativeDeep = function() {
     }
     depth++;
   } while ( (new Date()).getTime() - start < minSearchTime);
-  return best
+  return best.move;
 }
 
 AI.prototype.translate = function(move) {

@@ -4,11 +4,11 @@ function randomAI(grid) {
 
 
 // performs iterative deepening over the alpha-beta search
-randomAI.prototype.getRandomMove = function() {
+randomAI.prototype.getMove = function() {
   var start = (new Date()).getTime();
   var depth = 0;
   var value = Math.floor((Math.random() * 4));
-    return {move: value};
+    return value;
 }
 
 randomAI.prototype.translate = function(move) {

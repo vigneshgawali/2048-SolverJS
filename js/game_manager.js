@@ -8,10 +8,26 @@ function GameManager(size, InputManager, Actuator) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
 
-  this.inputManager.on('think', function() {
-    var best = this.ai.getBest();
-    this.actuator.showHint(best.move);
-  }.bind(this));
+//  this.inputManager.on('think', function() {
+//    var best = this.ai.getBest();
+//    this.actuator.showHint(best.move);
+//  }.bind(this));
+    
+    this.inputManager.on('Random', function(){
+        this.ai = new randomAI(this.grid);
+        console.log("Agent selected: Random");
+    }.bind(this));
+    
+    this.inputManager.on('Expectimax', function(){
+        this.ai = new minimaxAI(this.grid);
+        console.log("Agent selected: Expectimax");
+    }.bind(this));
+    
+    this.inputManager.on('MonteCarlo Tree Search', function(){
+        this.ai = new AI(this.grid);
+        console.log("Agent selected: MonteCarlo Tree Search");
+    }.bind(this));
+    
 
 
   this.inputManager.on('run', function() {
@@ -43,6 +59,7 @@ GameManager.prototype.setup = function () {
 
 //  this.ai           = new AI(this.grid);
   this.ai           = new randomAI(this.grid);
+//  this.ai           = new minimaxAI(this.grid);
 
   this.score        = 0;
   this.over         = false;
@@ -79,6 +96,7 @@ GameManager.prototype.move = function(direction) {
 
   if (!this.grid.movesAvailable()) {
     this.over = true; // Game over!
+      
   }
 
   this.actuate();
@@ -87,9 +105,12 @@ GameManager.prototype.move = function(direction) {
 // moves continuously until game is over
 GameManager.prototype.run = function() {
 //  var best = this.ai.getBest();
-  var best = this.ai.getRandomMove();
+//  var best = this.ai.getRandomMove();
     
-  this.move(best.move);
+  var nextMove = this.ai.getMove();
+    
+//  this.move(best.move);
+  this.move(nextMove);
   var timeout = animationDelay;
   if (this.running && !this.over && !this.won) {
     var self = this;

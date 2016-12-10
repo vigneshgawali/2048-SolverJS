@@ -54,20 +54,29 @@ KeyboardInputManager.prototype.listen = function () {
   var retry = document.getElementsByClassName("retry-button")[0];
   retry.addEventListener("click", this.restart.bind(this));
 
-  var hintButton = document.getElementById('hint-button');
-  hintButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    var feedbackContainer  = document.getElementById('feedback-container');
-    feedbackContainer.innerHTML = '<img src=img/spinner.gif />';
-    self.emit('think');
-  });
+
+//  var hintButton = document.getElementById('agent-select');
+//  hintButton.addEventListener('click', function(e) {
+//    e.preventDefault();
+//    var feedbackContainer  = document.getElementById('feedback-container');
+//    feedbackContainer.innerHTML = '<img src=img/spinner.gif />';
+//    self.emit('think');
+//  });
+    
+    var agentSelect = $(".dropdown-menu a");
+    agentSelect.on("click", function(){
+        var agent = $(this).text();
+        $('#drop-button').html(agent);
+        self.emit(agent); 
+    });
+    
 
   var runButton = document.getElementById('run-button');
   runButton.addEventListener('click', function(e) {
     e.preventDefault();
     self.emit('run')
-  })
-
+  });
+  
 
   // Listen to swipe events
   var gestures = [Hammer.DIRECTION_UP, Hammer.DIRECTION_RIGHT,
