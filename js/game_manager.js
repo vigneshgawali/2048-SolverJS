@@ -82,9 +82,6 @@ GameManager.prototype.setup = function () {
   this.grid         = new Grid(this.size);
   this.grid.addStartTiles();
 
-//  this.ai           = new AI(this.grid);
-
-//  this.ai           = new minimaxAI(this.grid);
   if(agent==="Random"){
     this.ai = new randomAI(this.grid);      
   }
@@ -130,7 +127,7 @@ GameManager.prototype.actuate = function () {
 
 // Changes Q Learning
 function getMedian(values) {
-	var val = values.slice(); // clone array to not sort original
+	var val = values.slice(); 
 	val.sort( function(a,b) {return a - b;} );
     var half = Math.floor(val.length/2);
 
@@ -159,24 +156,19 @@ GameManager.prototype.logResults = function() {
 		var sum = 0;
 		StateManager.medianScore = getMedian(StateManager.scores);
 		for( score in StateManager.scores ){
-
 			sum += StateManager.scores[ score ];
-
 		}
 		console.log( sum );
 		StateManager.meanScore = sum / StateManager.scores.length;
 		StateManager.gamesPlayed = StateManager.scores.length;
-
 	}
 	
 	if(!this.win){
 		setTimeout( function() {
-
 			GM.actuator.restart();
 			GM.setup();
 			document.getElementById("run-button").click();
 			document.getElementById("run-button").click();
-
 		}, 1000 );
 	}
 
@@ -195,8 +187,6 @@ GameManager.prototype.move = function(direction) {
   } else {
     this.won = true;
   }
-
-  //console.log(this.grid.valueSum());
 
   if (!this.grid.movesAvailable()) {
     this.over = true; // Game over!

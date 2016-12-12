@@ -13,34 +13,30 @@ function qlearningAI() {
 qlearningAI.prototype.getMaxVal = function() {
 	var max = 0;
 	this.grid.cells.forEach(function(row){
-		row.forEach( function( curVal ){
-			if( curVal && curVal.value > max )
+		row.forEach(function(curVal){
+			if(curVal && curVal.value > max)
 				max = curVal.value;
 		});
 	});
 
-	if( StateManager.maxVal < max ){
+	if(StateManager.maxVal < max){
 		StateManager.maxVal = max;
-//		document.getElementById('max-value').innerHTML = 'Max tile Value is: ' + max;
 	}
 
 	return max;
 }
 
 qlearningAI.prototype.getEmptyCount = function() {
-
 	var count = 0;
 	this.grid.cells.forEach(function(row) {
-		row.forEach( function( curVal ) {
-			if( curVal )
+		row.forEach(function(curVal) {
+			if(curVal)
 				return;
 			
 			count++;
 		});
 	});
-
 	return count;
-
 }
 
 qlearningAI.prototype.buildInputs = function(score, moved, timesMoved, pMove) {
@@ -50,39 +46,36 @@ qlearningAI.prototype.buildInputs = function(score, moved, timesMoved, pMove) {
 	var max = this.getMaxVal();
 
 	this.grid.cells.forEach(function(row, index) {
-		row.forEach( function( curVal ) {
+		row.forEach(function(curVal) {
 			
-			if( curVal ){
-				inputs.push( ( 1 + ( -1 / curVal.value ) ) );
-			}else{
+			if(curVal){
+				inputs.push((1 + (-1 / curVal.value)));
+			}
+            else{
 				inputs.push(0);
 			}
 		});
 	});
 
-	inputs.push( ( this.previousMove > 0 ) ? this.previousMove / 4      : 0 );
-	inputs.push( ( score > 0 )             ? ( 1 + ( -1 / score ) )     : 0 );
-	inputs.push( ( moved )                 ? 1                          : 0 );
-	inputs.push( ( this.getEmptyCount() > 0 ) ? this.getEmptyCount()    : 0 );
+	inputs.push((this.previousMove > 0) ? this.previousMove/4 : 0);
+	inputs.push((score > 0 ? (1+(-1/score)): 0);
+	inputs.push((moved) ? 1 : 0);
+	inputs.push((this.getEmptyCount() > 0) ? this.getEmptyCount() : 0);
 
-//	console.log('Inputs: ', inputs);
 	return inputs;
 
 }
 
 qlearningAI.prototype.getMove = function(grid, meta) {
 	this.grid = grid;
-	var inputs = this.buildInputs( meta.score, meta.moved );
-	var action = this.brain.forward( inputs );
+	var inputs = this.buildInputs(meta.score, meta.moved);
+	var action = this.brain.forward(inputs);
 	
 	var move = {
 		move: this.moves[action]
 	};
-
 	this.previousMove = move.move;
-	
 	return move;
-
 }
 
 qlearningAI.prototype.setMoved = function(moved){
@@ -90,50 +83,26 @@ qlearningAI.prototype.setMoved = function(moved){
 }
 
 qlearningAI.prototype.reward = function(meta) {
-
 	var max = this.getMaxVal();	
 	if( meta.over && meta.won ){
-
 		reward = 1;
-
 	}else if( meta.score != meta.previous ) {
-
 		reward  = ( 1 + (-1 / ( meta.score - meta.previous ) ) );
-	//	reward += ( ( meta.empty > 0 ) ? ( meta.empty / 16 ) : 0 );
-	//	reward /= 4;
-
 	}else{
-
-	//	reward = -(0.5);
 		reward = 0;
 	}
-
-	//if( meta.over && !meta.won ){
-//		console.log('Inverting Reward due to Loss');
-	//	reward *= -1;
-	//}
-//	console.log('Reward: ', reward );
 	this.brain.backward( reward );
-//	if( (Math.floor( Math.random() * (100 - 2) ) + 1) > 50 ){
-//		this.brain.visSelf(document.getElementById('brainInfo'));
-//	}
-
 }
 
 qlearningAI.prototype.rewardMultiple = function(meta){
-
 	var max = this.getMaxVal();
-	var scoreReward = ( 1 + (-1 / (meta.score - meta.previous ) ) );
-	var maxReward = ( 1 + ( ( -1 * max ) / meta.score ) );
-	var movesReward = ( ( meta.timesMoved > 0 ) ? ( 1 + (-1 / meta.timesMoved ) ) : 0);
-	var emptyReward = ( ( meta.empty > 0 ) ? ( 1 + (-1 / meta.empty ) ) : 0 );
+	var scoreReward = (1 + (-1 / (meta.score - meta.previous)));
+	var maxReward = (1 + ((-1 * max) / meta.score));
+	var movesReward = ((meta.timesMoved > 0) ? (1 + (-1 / meta.timesMoved)) : 0);
+	var emptyReward = ((meta.empty > 0) ? (1 + (-1 / meta.empty)) : 0);
 
-	this.brain.backward( scoreReward );
-	this.brain.backward( maxReward );
-	this.brain.backward( movesReward );
-	this.brain.backward( emptyReward );
-//	if( (Math.floor( Math.random() * (100 - 2) ) + 1) > 90 ){
-//		this.brain.visSelf(document.getElementById('brainInfo'));
-//	}
-
+	this.brain.backward(scoreReward);
+	this.brain.backward(maxReward);
+	this.brain.backward(movesReward);
+	this.brain.backward(emptyReward);
 }

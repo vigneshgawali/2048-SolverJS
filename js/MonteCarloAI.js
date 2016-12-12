@@ -14,11 +14,9 @@ MonteCarloAI.prototype.translate = function(move) {
 }
 
 
-// performs iterative deepening over the alpha-beta search
 MonteCarloAI.prototype.getMove = function() {
   	return this.monteCarloMove();
 }
-
 
 // some heuristics to make the effect more sutle and exploit the properties of the grid and other features
 MonteCarloAI.prototype.evaluateGrid = function(){
@@ -78,12 +76,10 @@ MonteCarloAI.prototype.monteCarloMove = function(){
                 scores[dir] += currentScore;
             }
             iteration++;
-//            newAI.reset();
         }
     }
     
     for(var i=0; i<scores.length; i++){
-        
         if(isNaN(scores[i])){
             scores[i] = 0;
         }
@@ -113,7 +109,6 @@ getScore = function(direction, gameGrid){
     while(newAI.grid.movesAvailable() && depth > 0){
         var randomDirection = Math.floor(Math.random()*4);
         newAI.grid.move(randomDirection);
-//        totalScore += gameGrid.monotonicity2() + (Math.log(gameGrid.availableCells().length) * 2.7);
         totalScore += newAI.evaluateGrid();
         depth--;
     }
