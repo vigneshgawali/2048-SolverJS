@@ -9,7 +9,7 @@ function GameManager(size, InputManager, Actuator) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
     
-  agent = "Expectimax";
+  agent = "MonteCarlo Tree Search";
     
   this.inputManager.on('Random', function(){
     agent = "Random";
@@ -25,7 +25,7 @@ function GameManager(size, InputManager, Actuator) {
     
   this.inputManager.on('MonteCarlo Tree Search', function(){
     agent = "MonteCarlo Tree Search";
-    this.ai = new minimaxAI(this.grid);
+    this.ai = new MonteCarloAI(this.grid);
     console.log("Agent selected: MonteCarlo Tree Search");
   }.bind(this));
   
@@ -66,7 +66,7 @@ GameManager.prototype.setup = function () {
     this.ai = new expectimaxAI(this.grid);
   }
   else if(agent==="MonteCarlo Tree Search"){
-    this.ai = new minimaxAI(this.grid);
+    this.ai = new MonteCarloAI(this.grid);
   }
 
   this.score        = 0;

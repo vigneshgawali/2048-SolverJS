@@ -28,7 +28,6 @@ Grid.prototype.build = function () {
   }
 };
 
-
 // Find the first available random position
 Grid.prototype.randomAvailableCell = function () {
   var cells = this.availableCells();
@@ -537,6 +536,7 @@ Grid.prototype.maxValue = function() {
   return Math.log(max) / Math.log(2);
 }
 
+
 Grid.prototype.isWin = function() {
   var self = this;
   for (var x=0; x<4; x++) {
@@ -551,3 +551,19 @@ Grid.prototype.isWin = function() {
   return false;
 }
 
+Grid.prototype.serialize = function () {
+  var cellState = [];
+
+  for (var x = 0; x < this.size; x++) {
+    var row = cellState[x] = [];
+
+    for (var y = 0; y < this.size; y++) {
+      row.push(this.cells[x][y] ? this.cells[x][y].serialize() : null);
+    }
+  }
+    console.log("Serialize: "+this.size+" "+this.cells);
+  return {
+    size: this.size,
+    cells: cellState
+  };
+};
