@@ -3,7 +3,6 @@ function randomAI(grid) {
 }
 
 
-// performs iterative deepening over the alpha-beta search
 randomAI.prototype.getMove = function() {
   var start = (new Date()).getTime();
   var depth = 0;
