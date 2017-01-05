@@ -13,7 +13,7 @@ Heuristics Used:
 - Max tile value (Higher the better)
 - Smoothness: Pairwise difference between the tiles. (Lower the better)
 
-Try it <a href="http://vigneshgawali.me/2048-SolverJS/">here!</a>
+Play it <a href="http://vigneshgawali.me/2048-SolverJS/">here!</a>
 
 
 Sample Screenshot of Game win:
