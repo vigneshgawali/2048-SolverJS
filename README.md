@@ -12,3 +12,10 @@ Heuristics Used:
 - Number of empty cells (Lower the better)
 - Max tile value (Higher the better)
 - Smoothness: Pairwise difference between the tiles. (Lower the better)
+
+Sample Screenshot of Game win:
+
+![Alt text](/../gh-pages/GameSnip.JPG?raw=true "Game win screenshot")
+
+Thanks to [Gabriele Cirulli](https://github.com/gabrielecirulli) for the game framework.
+
